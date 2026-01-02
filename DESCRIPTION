@@ -1,0 +1,23 @@
+Package: dmisc
+Type: Package
+Title: Utility Package by Demetri Pananos
+Version: 0.1.0
+Authors@R: c(
+    person(
+      "Demetri", "Pananos",
+      email = "apananos@uwo.ca",
+      role = c("aut", "cre")
+    )
+  )
+Description: Templates, handy functions, etc.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    quarto,
+    renv,
+    rmarkdown,
+    stringr,
+    usethis,
+    withr
+RoxygenNote: 7.3.3

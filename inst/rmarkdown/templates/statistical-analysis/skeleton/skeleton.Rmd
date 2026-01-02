@@ -1,0 +1,19 @@
+---
+title: "Statistical Analysis"
+author: "Demetri Pananos"
+date: "`r Sys.Date()`"
+output: 
+  pdf_document:
+    keep_tex: true
+header-includes:
+    - \usepackage[default]{sourcesanspro}
+    - \usepackage[T1]{fontenc}
+mainfont: arial
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, # Do not include code in the output
+                      message = FALSE,
+                      warning = FALSE
+                      )
+```

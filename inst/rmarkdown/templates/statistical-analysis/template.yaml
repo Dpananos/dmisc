@@ -1,0 +1,4 @@
+name: Statistical Analysis
+description: >
+   RMarkdown template for statistical analysis.
+create_dir: FALSE
