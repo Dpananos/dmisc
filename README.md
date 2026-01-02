@@ -7,7 +7,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of dmisc is to ...
+A collection of helper functions I use over and over
 
 ## Installation
 
