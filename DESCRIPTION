@@ -21,3 +21,5 @@ Imports:
     usethis,
     withr
 RoxygenNote: 7.3.3
+URL: https://github.com/Dpananos/dmisc
+BugReports: https://github.com/Dpananos/dmisc/issues
