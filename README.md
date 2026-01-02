@@ -1,5 +1,6 @@
 
 <img src="man/figures/logo.png" align="center" height="250" />
+
 # dmisc
 
 
