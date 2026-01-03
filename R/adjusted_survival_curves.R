@@ -8,6 +8,7 @@
 #' @param times Optional numeric vector of times at which to evaluate predictions
 #' @return A data frame with survival predictions including confidence intervals
 #'
+#' @export
 adjusted_survival_curves <- function(model, grid, times = NULL) {
   # Validation
   if (!inherits(model, "coxph")) {
@@ -35,7 +36,7 @@ adjusted_survival_curves <- function(model, grid, times = NULL) {
     }
 
     # Extract survival summary at the specified times
-    summ <- summary(sf, times = eval_times)
+    summ <- survival::summary(sf, times = eval_times)
 
     # 3. Create a tibble with the requested columns and sensible names
     # Including row_data ensures the covariates are preserved in the output
@@ -49,7 +50,7 @@ adjusted_survival_curves <- function(model, grid, times = NULL) {
       conf_high = summ$upper
     )
 
-    cross_join(row_data, tidied_cols)
+    dplyr::cross_join(row_data, tidied_cols)
   })
 
   return(results_list)
