@@ -3,14 +3,14 @@
 #' This function creates survival predictions for each scenario in a datagrid
 #' using a Cox proportional hazards model.
 #'
-#' @param model A Cox proportional hazards model (coxph object)
 #' @param grid A data frame or tibble containing the scenarios to predict for
+#' @param model A Cox proportional hazards model (coxph object)
 #' @param times Optional numeric vector of times at which to evaluate
 #'   predictions
 #' @return A data frame with survival predictions including confidence intervals
 #'
 #' @export
-adjusted_survival_curves <- function(model, grid, times = NULL) {
+adjusted_survival_curves <- function(grid, model, times = NULL) {
   # Validation
   if (!inherits(model, "coxph")) {
     stop("'model' must be a coxph object.")
