@@ -13,7 +13,7 @@ Description: Templates, handy functions, etc.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Imports: 
+Imports:
     dplyr,
     purrr,
     quarto,
@@ -21,6 +21,7 @@ Imports:
     rmarkdown,
     stringr,
     survival,
+    tibble,
     tidyr,
     usethis,
     withr
