@@ -181,6 +181,113 @@ test_that("works with extra columns in grid", {
   expect_equal(unique(result$extra), "info")
 })
 
+# FORMULA COMPLEXITY TESTS - Test various formula constructs
+test_that("works with natural spline basis functions", {
+  test_setup <- setup_test_data()
+  age_knots <- quantile(test_setup$data$age, c(0.10, 0.50, 0.90))
+
+  model_spline <- survival::coxph(
+    survival::Surv(time, status) ~ splines::ns(age, knots = age_knots) + sex,
+    data = test_setup$data
+  )
+
+  grid <- data.frame(age = c(50, 60, 70), sex = 1)
+  result <- adjusted_survival_curves(grid = grid, model = model_spline)
+
+  expect_s3_class(result, "data.frame")
+  expect_true(nrow(result) > 0)
+  expect_true(all(c("age", "sex") %in% colnames(result)))
+})
+
+test_that("works with B-spline basis functions", {
+  test_setup <- setup_test_data()
+  age_knots <- quantile(test_setup$data$age, c(0.25, 0.50, 0.75))
+
+  model_bs <- survival::coxph(
+    survival::Surv(time, status) ~ splines::bs(age, knots = age_knots) + sex,
+    data = test_setup$data
+  )
+
+  grid <- data.frame(age = 60, sex = 1)
+  result <- adjusted_survival_curves(grid = grid, model = model_bs)
+
+  expect_s3_class(result, "data.frame")
+})
+
+test_that("works with polynomial transformations", {
+  test_setup <- setup_test_data()
+
+  model_poly <- survival::coxph(
+    survival::Surv(time, status) ~ poly(age, 2) + sex,
+    data = test_setup$data
+  )
+
+  grid <- data.frame(age = 60, sex = 1)
+  result <- adjusted_survival_curves(grid = grid, model = model_poly)
+
+  expect_s3_class(result, "data.frame")
+})
+
+test_that("works with I() transformations", {
+  test_setup <- setup_test_data()
+
+  model_trans <- survival::coxph(
+    survival::Surv(time, status) ~ I(age^2) + I(age * sex) + sex,
+    data = test_setup$data
+  )
+
+  grid <- data.frame(age = 60, sex = 1)
+  result <- adjusted_survival_curves(grid = grid, model = model_trans)
+
+  expect_s3_class(result, "data.frame")
+})
+
+test_that("works with stratified models", {
+  test_setup <- setup_test_data()
+
+  model_strat <- survival::coxph(
+    survival::Surv(time, status) ~ age + strata(sex),
+    data = test_setup$data
+  )
+
+  grid <- data.frame(age = c(50, 70), sex = c(0, 1))
+  result <- adjusted_survival_curves(grid = grid, model = model_strat)
+
+  expect_s3_class(result, "data.frame")
+})
+
+test_that("works with interaction terms", {
+  test_setup <- setup_test_data()
+
+  model_interact <- survival::coxph(
+    survival::Surv(time, status) ~ age * sex,
+    data = test_setup$data
+  )
+
+  grid <- expand.grid(age = c(50, 70), sex = c(0, 1))
+  result <- adjusted_survival_curves(grid = grid, model = model_interact)
+
+  expect_s3_class(result, "data.frame")
+  expect_equal(nrow(grid), 4)
+})
+
+test_that("still errors when actual covariate missing with splines", {
+  test_setup <- setup_test_data()
+  age_knots <- quantile(test_setup$data$age, c(0.10, 0.50, 0.90))
+
+  model_spline <- survival::coxph(
+    survival::Surv(time, status) ~ splines::ns(age, knots = age_knots) + sex,
+    data = test_setup$data
+  )
+
+  grid_missing <- data.frame(age = 60)  # Missing sex
+
+  expect_error(
+    adjusted_survival_curves(grid = grid_missing, model = model_spline),
+    "missing required model covariates.*sex"
+  )
+})
+
 # EDGE CASE TESTS
 test_that("handles grid with one row correctly", {
   test_setup <- setup_test_data()

@@ -87,6 +87,7 @@
 #' }
 #'
 #' @importFrom tibble tibble
+#' @importFrom stats terms
 #' @export
 adjusted_survival_curves <- function(grid, model, times = NULL) {
   # Validation
@@ -103,8 +104,13 @@ adjusted_survival_curves <- function(grid, model, times = NULL) {
   }
 
   # Validate that grid contains all required covariates from the model
-  model_formula <- model$formula
-  required_vars <- all.vars(model_formula[[3]])  # RHS variables only
+  # Extract variables from the model's predvars attribute, which contains
+  # evaluated predictor expressions with parameters already substituted
+  model_terms <- terms(model)
+  predvars <- attr(model_terms, "predvars")
+  predictor_calls <- as.list(predvars)[-c(1, 2)]  # Skip "list" and response
+  required_vars <- unique(unlist(lapply(predictor_calls, all.vars)))
+
   missing_vars <- setdiff(required_vars, colnames(grid))
   if (length(missing_vars) > 0) {
     stop("'grid' is missing required model covariates: ",

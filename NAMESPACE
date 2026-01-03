@@ -3,4 +3,5 @@
 export(adjusted_survival_curves)
 export(knots)
 importFrom(stats,quantile)
+importFrom(stats,terms)
 importFrom(tibble,tibble)
