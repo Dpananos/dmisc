@@ -58,7 +58,6 @@
 #' age_knots <- knots(age)
 #' age_spline <- ns(age, knots = age_knots)
 #'
-#' @importFrom stats quantile
 #' @export
 knots <- function(x, strategy = 'harrell', n_knots = NULL) {
   # 1. Validate inputs
@@ -130,8 +129,8 @@ knots <- function(x, strategy = 'harrell', n_knots = NULL) {
     }
 
     # 5. Compute and return knot values
-    knot_values <- quantile(x, probs = quantile_positions, na.rm = TRUE)
-    knot_values <- unname(knot_values)
+    knot_values <- stats::quantile(x, probs = quantile_positions, na.rm = TRUE)
+    knot_values <- base::unname(knot_values)
 
     return(knot_values)
   }

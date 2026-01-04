@@ -86,8 +86,6 @@
 #'   theme_minimal()
 #' }
 #'
-#' @importFrom tibble tibble
-#' @importFrom stats terms
 #' @export
 adjusted_survival_curves <- function(grid, model, times = NULL) {
   # Validation
@@ -106,7 +104,7 @@ adjusted_survival_curves <- function(grid, model, times = NULL) {
   # Validate that grid contains all required covariates from the model
   # Extract variables from the model's predvars attribute, which contains
   # evaluated predictor expressions with parameters already substituted
-  model_terms <- terms(model)
+  model_terms <- stats::terms(model)
   predvars <- attr(model_terms, "predvars")
   predictor_calls <- as.list(predvars)[-c(1, 2)]  # Skip "list" and response
   required_vars <- unique(unlist(lapply(predictor_calls, all.vars)))
@@ -139,7 +137,7 @@ adjusted_survival_curves <- function(grid, model, times = NULL) {
     }
 
     # Extract survival summary at the specified times
-    summ <- summary(sf, times = eval_times)
+    summ <- base::summary(sf, times = eval_times)
 
     # 3. Create a tibble with the requested columns and sensible names
     # Including row_data ensures the covariates are preserved in the output
