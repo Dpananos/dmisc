@@ -2,3 +2,4 @@
 
 export(adjusted_survival_curves)
 export(knots)
+export(num_imputations)
