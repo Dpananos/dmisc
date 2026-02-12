@@ -22,10 +22,6 @@ statistical_analysis_template <- function(path, ...){
       # Initialize an renv if you like
       renv::init(bare=T, force = FALSE, load = FALSE, restart = FALSE)
 
-      usethis::use_template('install_packages.R',
-                            save_as = 'R/install_packages.R',
-                            package = 'dmisc')
-
     }
 
   })

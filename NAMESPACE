@@ -3,3 +3,4 @@
 export(adjusted_survival_curves)
 export(knots)
 export(num_imputations)
+export(simulate_discrete_survival)
